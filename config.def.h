@@ -22,18 +22,18 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const int allow_constrain      = 1;
 
 static const Rule rules[] = {
-	/* app_id     title            tags mask     isfloating   monitor */
+	/* app_id     title            tags mask   iscentered  isfloating   monitor */
 	/* examples:
-	{ "Gimp",     NULL,            0,       1,           -1 },
+	{ "Gimp",     NULL,            0,          0,          1,           -1 },
 	*/
-	{ "firefox",  NULL,            0,       0,           -1 },
-	{ NULL     ,  "termScratch",   0,       1,           -1 },
-	{ NULL     ,  "rangerScratch", 0,       1,           -1 },
-	{ NULL     ,  "calcScratch",   0,       1,           -1 },
-	{ NULL     ,  "volumeScratch", 0,       1,           -1 },
-	{ NULL     ,  "browserScratch",0,       1,           -1 },
-	{ NULL     ,  "st",            0,       0,           -1 },
-	{ "foot"   ,  NULL,            0,       0,           -1 },
+	{ "firefox",  NULL,            0,          0,          0,           -1 },
+	{ NULL     ,  "termScratch",   0,          1,          1,           -1 },
+	{ NULL     ,  "rangerScratch", 0,          1,          1,           -1 },
+	{ NULL     ,  "calcScratch",   0,          1,          1,           -1 },
+	{ NULL     ,  "volumeScratch", 0,          1,          1,           -1 },
+	{ NULL     ,  "browserScratch",0,          1,          1,           -1 },
+	{ NULL     ,  "st",            0,          1,          0,           -1 },
+	{ "foot"   ,  NULL,            0,          0,          0,           -1 },
 };
 
 /* layout(s) */
