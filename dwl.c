@@ -77,7 +77,7 @@
 #define IDLE_NOTIFY_ACTIVITY    wlr_idle_notify_activity(idle, seat), wlr_idle_notifier_v1_notify_activity(idle_notifier, seat)
 
 /* enums */
-enum { CurNormal, CurPressed, CurMove, CurResize }; /* cursor */
+enum { CurNormal, CurPressed, CurMove, CurResize, Curmfact }; /* cursor */
 enum { XDGShell, LayerShell, X11Managed, X11Unmanaged }; /* client types */
 enum { LyrBg, LyrBottom, LyrTop, LyrOverlay, LyrTile, LyrFloat, LyrFS, LyrDragIcon, LyrBlock, NUM_LAYERS }; /* scene layers */
 #ifdef XWAYLAND
@@ -1746,6 +1746,9 @@ locksession(struct wl_listener *listener, void *data)
 	if (cur_lock) {
 		wlr_session_lock_v1_destroy(session_lock);
 		return;
+	} else if (cursor_mode == Curmfact) {
+		selmon->mfact = (cursor->x - selmon->m.x) / selmon->m.width;
+		arrange(selmon);
 	}
 	lock = ecalloc(1, sizeof(*lock));
 	focusclient(NULL, 0);
@@ -2020,14 +2023,15 @@ moveresize(const Arg *arg)
 		return;
 
 	/* Float the window and tell motionnotify to grab it */
-	setfloating(grabc, 1);
 	switch (cursor_mode = arg->ui) {
 	case CurMove:
+		setfloating(grabc, 1);
 		grabcx = cursor->x - grabc->geom.x;
 		grabcy = cursor->y - grabc->geom.y;
 		wlr_xcursor_manager_set_cursor_image(cursor_mgr, (cursor_image = "fleur"), cursor);
 		break;
 	case CurResize:
+		setfloating(grabc, 1);
 		/* Doesn't work for X11 output - the next absolute motion event
 		 * returns the cursor to where it started */
 		wlr_cursor_warp_closest(cursor, NULL,
@@ -2036,6 +2040,9 @@ moveresize(const Arg *arg)
 		wlr_xcursor_manager_set_cursor_image(cursor_mgr,
 				(cursor_image = "bottom_right_corner"), cursor);
 		break;
+	case Curmfact:
+		selmon->mfact = (cursor->x - selmon->m.x) / selmon->m.width;
+		arrange(selmon);
 	}
 }
 
@@ -2157,6 +2164,7 @@ printstatus(void)
 			printf("%s title %s\n", m->wlr_output->name, client_get_title(c));
 			printf("%s fullscreen %u\n", m->wlr_output->name, c->isfullscreen);
 			printf("%s floating %u\n", m->wlr_output->name, c->isfloating);
+            printf("selmonx %d\n", c->geom.x);
 			sel = c->tags;
 		} else {
 			printf("%s title \n", m->wlr_output->name);
@@ -2169,6 +2177,7 @@ printstatus(void)
 		printf("%s tags %u %u %u %u\n", m->wlr_output->name, occ, m->tagset[m->seltags],
 				sel, urg);
 		printf("%s layout %s\n", m->wlr_output->name, m->lt[m->sellt]->symbol);
+        printf("mousepos %f, selmonx %f\n", cursor->x, m->mfact);
 	}
 	fflush(stdout);
 }
