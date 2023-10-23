@@ -2019,19 +2019,18 @@ moveresize(const Arg *arg)
 	if (cursor_mode != CurNormal && cursor_mode != CurPressed)
 		return;
 	xytonode(cursor->x, cursor->y, NULL, &grabc, NULL, NULL, NULL);
-	if (!grabc || client_is_unmanaged(grabc) || grabc->isfullscreen)
+	if (!grabc || client_is_unmanaged(grabc))
 		return;
 
 	/* Float the window and tell motionnotify to grab it */
+    if (arg->ui == CurMove || arg->ui == CurResize) setfloating(grabc, 1);
 	switch (cursor_mode = arg->ui) {
 	case CurMove:
-		setfloating(grabc, 1);
 		grabcx = cursor->x - grabc->geom.x;
 		grabcy = cursor->y - grabc->geom.y;
 		wlr_xcursor_manager_set_cursor_image(cursor_mgr, (cursor_image = "fleur"), cursor);
 		break;
 	case CurResize:
-		setfloating(grabc, 1);
 		/* Doesn't work for X11 output - the next absolute motion event
 		 * returns the cursor to where it started */
 		wlr_cursor_warp_closest(cursor, NULL,
@@ -2043,6 +2042,7 @@ moveresize(const Arg *arg)
 	case Curmfact:
 		selmon->mfact = (cursor->x - selmon->m.x) / selmon->m.width;
 		arrange(selmon);
+        break;
 	}
 }
 
