@@ -133,7 +133,7 @@ static const char *termScratch[] = { "a", "st", "-t", "termScratch", "-e", "fish
 static const char *rangerScratch[] = { "b", "st", "-t", "rangerScratch", "-e", "ranger", NULL };
 static const char *calcScratch[] = { "c", "st", "-t", "calcScratch", "-e", "qalc", NULL };
 static const char *volumeScratch[] = { "d", "st", "-t", "volumeScratch", "-e", "pulsemixer", NULL };
-static const char *browserScratch[] = { "e", "st", "-t", "browserScratch", "-e", "qutebrowser", NULL };
+static const char *browserScratch[] = { "e", "st", "-t", "browserScratch", "-e", "browserScratch", NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
