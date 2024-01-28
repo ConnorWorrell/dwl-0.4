@@ -127,6 +127,7 @@ static const char *menucmd[] = { "yofi", "binapps", NULL };
 static const char *hidebar[] = { "killall", "-SIGUSR1", "waybar", NULL };
 static const char *setwallpaper[] = { "setWallpaper", "-r" , NULL };
 static const char *setlock[] = { "lock" , NULL };
+static const char *screenshotcmd[] = { "screenshot" , NULL };
 
 /* named scratchpads - First arg only serves to match against key in rules*/
 static const char *termScratch[] = { "a", "st", "-t", "termScratch", "-e", "fish", NULL };
@@ -143,6 +144,7 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_Return,     spawn,          {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_w,          spawn,          {.v = setwallpaper} },
 	{ WLR_MODIFIER_ALT,          XKB_KEY_l,          spawn,          {.v = setlock} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_s,          spawn,          {.v = screenshotcmd} },
     { MODKEY,                    XKB_KEY_y,      togglescratch,  {.v = termScratch } },
     { MODKEY,                    XKB_KEY_u,      togglescratch,  {.v = rangerScratch } },
     { MODKEY,                    XKB_KEY_c,      togglescratch,  {.v = calcScratch } },
